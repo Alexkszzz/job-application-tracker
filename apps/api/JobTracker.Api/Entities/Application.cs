@@ -7,7 +7,7 @@ public class Application
     {
     }
 
-    private Application(string companyName, string jobTitle, ApplicationStatus status, string jobDescription, string? location, decimal? salary, DateTimeOffset? appliedDate, DateTimeOffset? interviewDate, string? notes, string? jobUrl)
+    private Application(string companyName, string jobTitle, ApplicationStatus status, string jobDescription, string? location, decimal? salary, DateTimeOffset? appliedDate, DateTimeOffset? interviewDate, string? notes, string? jobUrl, string? resume, string? coverLetter)
     {
         Id = Guid.NewGuid();
         CompanyName = companyName;
@@ -20,6 +20,8 @@ public class Application
         InterviewDate = interviewDate;
         Notes = notes;
         JobUrl = jobUrl;
+        Resume = resume;
+        CoverLetter = coverLetter;
     }
 
     public static Application Create(
@@ -32,7 +34,9 @@ public class Application
         decimal? salary = null,
         DateTimeOffset? interviewDate = null,
         string? notes = null,
-        string? jobUrl = null)
+        string? jobUrl = null,
+        string? resume = null,
+        string? coverLetter = null)
     {
         var now = DateTimeOffset.UtcNow;
         return new Application
@@ -47,6 +51,8 @@ public class Application
             InterviewDate = interviewDate,
             Notes = notes,
             JobUrl = jobUrl,
+            Resume = resume,
+            CoverLetter = coverLetter,
             CreatedAt = now,
             UpdatedAt = now
         };
@@ -73,6 +79,10 @@ public class Application
     public string? Notes { get; set; }
     
     public string? JobUrl { get; set; }
+    
+    public string? Resume { get; set; }
+    
+    public string? CoverLetter { get; set; }
     
     public DateTimeOffset CreatedAt { get; set; }
     

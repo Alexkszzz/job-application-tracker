@@ -46,6 +46,12 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
         builder.Property(a => a.JobUrl)
             .HasMaxLength(500);
         
+        builder.Property(a => a.Resume)
+            .HasMaxLength(1000);
+        
+        builder.Property(a => a.CoverLetter)
+            .HasMaxLength(1000);
+        
         builder.Property(a => a.CreatedAt)
             .IsRequired();
         

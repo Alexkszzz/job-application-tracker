@@ -19,7 +19,9 @@ public static class ApplicationMappings
             AppliedDate = application.AppliedDate,
             InterviewDate = application.InterviewDate,
             Notes = application.Notes,
-            JobUrl = application.JobUrl
+            JobUrl = application.JobUrl,
+            Resume = application.Resume,
+            CoverLetter = application.CoverLetter
         };
     }
 
@@ -35,7 +37,9 @@ public static class ApplicationMappings
             salary: request.Salary,
             interviewDate: request.InterviewDate,
             notes: request.Notes,
-            jobUrl: request.JobUrl
+            jobUrl: request.JobUrl,
+            resume: request.Resume,
+            coverLetter: request.CoverLetter
         );
     }
 
@@ -58,6 +62,8 @@ public static class ApplicationMappings
         application.InterviewDate = dto.InterviewDate;
         application.Notes = dto.Notes;
         application.JobUrl = dto.JobUrl;
+        application.Resume = dto.Resume;
+        application.CoverLetter = dto.CoverLetter;
         application.UpdatedAt = DateTimeOffset.UtcNow;
     }
 }

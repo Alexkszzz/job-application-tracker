@@ -15,5 +15,7 @@ namespace JobTracker.Api.DTOs.Applications
         public DateTimeOffset? InterviewDate { get; init; }
         public string? Notes { get; init; }
         public string? JobUrl { get; init; }
+        public string? Resume { get; init; }
+        public string? CoverLetter { get; init; }
     }
 }
