@@ -10,7 +10,7 @@ namespace JobTracker.Api.DTOs.Applications
         public string JobDescription { get; set; }
         public string? Location { get; set; }
         public decimal? Salary { get; set; }
-        public required DateTimeOffset AppliedDate { get; set; }
+        public DateTimeOffset? AppliedDate { get; set; }
         public DateTimeOffset? InterviewDate { get; set; }
         public string? Notes { get; set; }
         public string? JobUrl { get; set; }

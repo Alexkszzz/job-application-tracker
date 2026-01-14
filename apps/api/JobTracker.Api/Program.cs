@@ -15,6 +15,16 @@ builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 // Add DbContext with SQLite (temporary for local testing)
 builder.Services.AddDbContext<JobTrackerDbContext>(options =>
     options.UseSqlite("Data Source=jobtracker.db"));
@@ -23,6 +33,8 @@ builder.Services.AddDbContext<JobTrackerDbContext>(options =>
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 
 var app = builder.Build();
+
+app.UseCors("AllowFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -11,7 +11,7 @@ namespace JobTracker.Api.DTOs.Applications
         public string JobDescription { get; init; }
         public string? Location { get; init; }
         public decimal? Salary { get; init; }
-        public DateTimeOffset AppliedDate { get; init; }
+        public DateTimeOffset? AppliedDate { get; init; }
         public DateTimeOffset? InterviewDate { get; init; }
         public string? Notes { get; init; }
         public string? JobUrl { get; init; }

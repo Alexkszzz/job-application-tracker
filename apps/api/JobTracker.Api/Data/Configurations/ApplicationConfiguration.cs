@@ -36,8 +36,7 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
             .IsRequired()
             .HasConversion<string>();
         
-        builder.Property(a => a.AppliedDate)
-            .IsRequired();
+        builder.Property(a => a.AppliedDate);
         
         builder.Property(a => a.InterviewDate);
         

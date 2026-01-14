@@ -7,7 +7,7 @@ public class Application
     {
     }
 
-    private Application(string companyName, string jobTitle, ApplicationStatus status, string jobDescription, string? location, decimal? salary, DateTimeOffset appliedDate, DateTimeOffset? interviewDate, string? notes, string? jobUrl)
+    private Application(string companyName, string jobTitle, ApplicationStatus status, string jobDescription, string? location, decimal? salary, DateTimeOffset? appliedDate, DateTimeOffset? interviewDate, string? notes, string? jobUrl)
     {
         Id = Guid.NewGuid();
         CompanyName = companyName;
@@ -26,7 +26,7 @@ public class Application
         string companyName,
         string jobTitle,
         ApplicationStatus status,
-        DateTimeOffset appliedDate,
+        DateTimeOffset? appliedDate,
         string jobDescription = null,
         string? location = null,
         decimal? salary = null,
@@ -66,7 +66,7 @@ public class Application
     
     public required ApplicationStatus Status { get; set; } // e.g., "Applied", "Interview", "Offer", "Rejected"
     
-    public DateTimeOffset AppliedDate { get; set; }
+    public DateTimeOffset? AppliedDate { get; set; }
     
     public DateTimeOffset? InterviewDate { get; set; }
     
