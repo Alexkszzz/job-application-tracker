@@ -1,20 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  Application,
-  ApplicationStatus,
-  ApplicationUpdateDto,
-} from "@/lib/api/types";
+import { ApplicationStatus, CreateApplicationRequest } from "@/lib/api/types";
 import { applicationService } from "@/lib/api/applications";
 import Toast from "@/components/Toast";
 
-export default function EditApplicationPage() {
-  const params = useParams();
+export default function NewApplicationPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<{
@@ -22,56 +16,20 @@ export default function EditApplicationPage() {
     type: "success" | "error";
   } | null>(null);
 
-  const [formData, setFormData] = useState<ApplicationUpdateDto>({
+  const [formData, setFormData] = useState<CreateApplicationRequest>({
     companyName: "",
     jobTitle: "",
     status: ApplicationStatus.Applied,
     jobDescription: "",
     location: "",
     salary: undefined,
-    appliedDate: "",
+    appliedDate: new Date().toISOString().split("T")[0], // Default to today
     interviewDate: "",
     notes: "",
     jobUrl: "",
     resumeUrl: "",
     coverLetterUrl: "",
   });
-
-  useEffect(() => {
-    const fetchApplication = async () => {
-      try {
-        setLoading(true);
-        const data = await applicationService.getById(params.id as string);
-
-        // Convert Application to form data
-        setFormData({
-          companyName: data.companyName,
-          jobTitle: data.jobTitle,
-          status: data.status,
-          jobDescription: data.jobDescription,
-          location: data.location || "",
-          salary: data.salary,
-          appliedDate: data.appliedDate.split("T")[0], // Convert to yyyy-MM-dd
-          interviewDate: data.interviewDate
-            ? data.interviewDate.split("T")[0]
-            : "",
-          notes: data.notes || "",
-          jobUrl: data.jobUrl || "",
-          resumeUrl: data.resumeUrl || "",
-          coverLetterUrl: data.coverLetterUrl || "",
-        });
-      } catch (err) {
-        setError("Failed to load application");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (params.id) {
-      fetchApplication();
-    }
-  }, [params.id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,8 +38,12 @@ export default function EditApplicationPage() {
 
     try {
       // Clean up empty strings to undefined
-      const updateData: ApplicationUpdateDto = {
-        ...formData,
+      const createData: CreateApplicationRequest = {
+        companyName: formData.companyName,
+        jobTitle: formData.jobTitle,
+        status: formData.status,
+        jobDescription: formData.jobDescription,
+        appliedDate: formData.appliedDate,
         location: formData.location || undefined,
         salary: formData.salary || undefined,
         interviewDate: formData.interviewDate || undefined,
@@ -91,31 +53,23 @@ export default function EditApplicationPage() {
         coverLetterUrl: formData.coverLetterUrl || undefined,
       };
 
-      await applicationService.update(params.id as string, updateData);
+      const newApp = await applicationService.create(createData);
       setToast({
-        message: "Application updated successfully!",
+        message: "Application created successfully!",
         type: "success",
       });
 
       // Redirect after showing toast
       setTimeout(() => {
-        router.push(`/applications/${params.id}`);
+        router.push(`/applications/${newApp.id}`);
       }, 1500);
     } catch (err) {
-      setError("Failed to update application");
-      setToast({ message: "Failed to update application", type: "error" });
+      setError("Failed to create application");
+      setToast({ message: "Failed to create application", type: "error" });
       console.error(err);
       setSubmitting(false);
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="text-lg">Loading...</div>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
@@ -129,12 +83,12 @@ export default function EditApplicationPage() {
 
       <div className="mb-6">
         <Link
-          href={`/applications/${params.id}`}
+          href="/applications"
           className="text-blue-600 hover:underline mb-4 inline-block"
         >
-          ← Back to Application
+          ← Back to Applications
         </Link>
-        <h1 className="text-3xl font-bold">Edit Application</h1>
+        <h1 className="text-3xl font-bold">New Application</h1>
       </div>
 
       {error && (
@@ -164,6 +118,7 @@ export default function EditApplicationPage() {
               setFormData({ ...formData, companyName: e.target.value })
             }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g. Microsoft"
           />
         </div>
 
@@ -184,6 +139,7 @@ export default function EditApplicationPage() {
               setFormData({ ...formData, jobTitle: e.target.value })
             }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="e.g. Senior Software Engineer"
           />
         </div>
 
@@ -332,6 +288,7 @@ export default function EditApplicationPage() {
               setFormData({ ...formData, jobDescription: e.target.value })
             }
             rows={6}
+            placeholder="Paste the job description here..."
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -414,10 +371,10 @@ export default function EditApplicationPage() {
             disabled={submitting}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
           >
-            {submitting ? "Saving..." : "Save Changes"}
+            {submitting ? "Creating..." : "Create Application"}
           </button>
           <Link
-            href={`/applications/${params.id}`}
+            href="/applications"
             className="px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
           >
             Cancel

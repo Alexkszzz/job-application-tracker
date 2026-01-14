@@ -17,6 +17,8 @@ export interface Application {
   interviewDate?: string;
   notes?: string;
   jobUrl?: string;
+  resumeUrl?: string;
+  coverLetterUrl?: string;
 }
 
 export interface CreateApplicationRequest {
@@ -30,6 +32,8 @@ export interface CreateApplicationRequest {
   interviewDate?: string;
   notes?: string;
   jobUrl?: string;
+  resumeUrl?: string;
+  coverLetterUrl?: string;
 }
 
 export interface UpdateApplicationRequest {
@@ -43,6 +47,8 @@ export interface UpdateApplicationRequest {
   interviewDate?: string;
   notes?: string;
   jobUrl?: string;
+  resumeUrl?: string;
+  coverLetterUrl?: string;
 }
 
 // Alias for consistency
