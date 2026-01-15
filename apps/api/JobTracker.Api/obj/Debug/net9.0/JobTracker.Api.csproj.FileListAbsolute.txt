@@ -158,3 +158,16 @@ F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\De
 F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\runtimes\win-arm64\native\e_sqlite3.dll
 F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\runtimes\win-x64\native\e_sqlite3.dll
 F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\runtimes\win-x86\native\e_sqlite3.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.Extensions.Identity.Core.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

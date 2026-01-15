@@ -25,12 +25,13 @@ public static class ApplicationMappings
         };
     }
 
-    public static Application ToEntity(this CreateApplicationRequest request)
+    public static Application ToEntity(this CreateApplicationRequest request, string userId)
     {
         return Application.Create(
             companyName: request.CompanyName,
             jobTitle: request.JobTitle,
             status: request.Status,
+            userId: userId,
             appliedDate: request.AppliedDate,
             jobDescription: request.JobDescription,
             location: request.Location,

@@ -56,5 +56,11 @@ public class ApplicationConfiguration : IEntityTypeConfiguration<Application>
             .IsRequired();
         
         builder.Property(a => a.UpdatedAt);
+        
+        // User relationship
+        builder.HasOne(a => a.User)
+            .WithMany()
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

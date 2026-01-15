@@ -14,14 +14,17 @@ public class ApplicationService : IApplicationService
         _context = context;
     }
 
-    public async Task<IEnumerable<Application>> GetAllApplicationsAsync()
+    public async Task<IEnumerable<Application>> GetAllApplicationsAsync(string userId)
     {
-        return await _context.Applications.ToListAsync();
+        return await _context.Applications
+            .Where(a => a.UserId == userId)
+            .ToListAsync();
     }
 
-    public async Task<Application?> GetApplicationByIdAsync(Guid id)
+    public async Task<Application?> GetApplicationByIdAsync(Guid id, string userId)
     {
-        return await _context.Applications.FindAsync(id);
+        return await _context.Applications
+            .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
     }
 
     public async Task<Application> CreateApplicationAsync(Application application)
@@ -31,9 +34,10 @@ public class ApplicationService : IApplicationService
         return application;
     }
 
-    public async Task<bool> UpdateApplicationAsync(Guid id, Application application)
+    public async Task<bool> UpdateApplicationAsync(Guid id, Application application, string userId)
     {
-        var existingApplication = await _context.Applications.FindAsync(id);
+        var existingApplication = await _context.Applications
+            .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
         if (existingApplication == null)
         {
             return false;
@@ -66,9 +70,10 @@ public class ApplicationService : IApplicationService
         }
     }
 
-    public async Task<bool> DeleteApplicationAsync(Guid id)
+    public async Task<bool> DeleteApplicationAsync(Guid id, string userId)
     {
-        var application = await _context.Applications.FindAsync(id);
+        var application = await _context.Applications
+            .FirstOrDefaultAsync(a => a.Id == id && a.UserId == userId);
         if (application == null)
         {
             return false;
