@@ -82,9 +82,15 @@ builder.Services.AddDbContext<JobTrackerDbContext>(options =>
     }
     else
     {
-        // Use SQLite with shared cache mode for Railway
-        var dbPath = Path.Combine("/tmp", "jobtracker.db");
-        options.UseSqlite($"Data Source={dbPath};Cache=Shared");
+        // Use SQLite - Railway has writable /tmp directory
+        var tmpDir = "/tmp";
+        if (!Directory.Exists(tmpDir))
+        {
+            tmpDir = Path.GetTempPath(); // Fallback to system temp
+        }
+        var dbPath = Path.Combine(tmpDir, "jobtracker.db");
+        Console.WriteLine($"Using SQLite database at: {dbPath}");
+        options.UseSqlite($"Data Source={dbPath}");
     }
 });
 
@@ -148,12 +154,18 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = services.GetRequiredService<JobTrackerDbContext>();
-        context.Database.Migrate();
+        
+        // Ensure database is created (simpler than migrations for SQLite)
+        context.Database.EnsureCreated();
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred creating the database.");
+        // Log to console since logger might not be available
+        Console.WriteLine($"Database initialization error: {ex.Message}");
+        Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        
+        // Don't crash the app - let it start without database
+        // (will fail on first API call but at least we'll see the error)
     }
 }
 
