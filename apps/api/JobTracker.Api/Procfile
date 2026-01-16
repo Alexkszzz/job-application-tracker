@@ -1,1 +1,1 @@
-web: dotnet JobTracker.Api.dll
+web: cd out && dotnet JobTracker.Api.dll

@@ -11,16 +11,18 @@
           "cmds": ["dotnet restore"]
         },
         "build": {
-          "cmds": ["dotnet publish -c Release -o out"]
+          "cmds": [
+            "dotnet publish -c Release -o out --no-restore"
+          ]
         }
       },
       "start": {
-        "cmd": "dotnet out/JobTracker.Api.dll"
+        "cmd": "cd out && dotnet JobTracker.Api.dll"
       }
     }
   },
   "deploy": {
-    "startCommand": "dotnet out/JobTracker.Api.dll",
+    "startCommand": "cd out && dotnet JobTracker.Api.dll",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
