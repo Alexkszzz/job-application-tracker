@@ -90,25 +90,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const login = async (data: LoginRequest) => {
-    try {
-      const response = await authApi.login(data);
-      saveAuthData(response);
-      router.push("/applications");
-    } catch (error: any) {
-      console.error("Login failed:", error);
-      throw error;
-    }
+    const response = await authApi.login(data);
+    saveAuthData(response);
+    router.push("/applications");
   };
 
   const register = async (data: RegisterRequest) => {
-    try {
-      const response = await authApi.register(data);
-      saveAuthData(response);
-      router.push("/applications");
-    } catch (error: any) {
-      console.error("Registration failed:", error);
-      throw error;
-    }
+    const response = await authApi.register(data);
+    saveAuthData(response);
+    router.push("/applications");
   };
 
   const logout = () => {

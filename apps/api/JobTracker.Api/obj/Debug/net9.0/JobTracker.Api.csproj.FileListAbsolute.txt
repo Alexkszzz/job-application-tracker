@@ -171,3 +171,4 @@ F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\obj\De
 F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\obj\Debug\net9.0\JobTracker.Api.pdb
 F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\obj\Debug\net9.0\JobTracker.Api.genruntimeconfig.cache
 F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\obj\Debug\net9.0\ref\JobTracker.Api.dll
+F:\Learn Coding Again\JAT\job-application-tracker\apps\api\JobTracker.Api\bin\Debug\net9.0\appsettings.Production.json

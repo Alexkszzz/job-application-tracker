@@ -12,11 +12,13 @@ namespace JobTracker.Api.Services.Implementation;
 public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly IConfiguration _configuration;
 
-    public AuthService(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+    public AuthService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
     {
         _userManager = userManager;
+        _signInManager = signInManager;
         _configuration = configuration;
     }
 
@@ -72,13 +74,41 @@ public class AuthService : IAuthService
             };
         }
 
-        var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
-        if (!isPasswordValid)
+        // Check if account is locked out
+        if (await _userManager.IsLockedOutAsync(user))
+        {
+            var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
+            var remainingMinutes = lockoutEnd.HasValue ? (int)(lockoutEnd.Value - DateTimeOffset.UtcNow).TotalMinutes : 0;
+            return new AuthResult
+            {
+                Succeeded = false,
+                Errors = new List<string> { $"Account is locked due to multiple failed login attempts. Please try again in {remainingMinutes} minute(s)." }
+            };
+        }
+
+        // Use SignInManager to properly track failed attempts
+        var result = await _signInManager.PasswordSignInAsync(user, request.Password, isPersistent: false, lockoutOnFailure: true);
+        
+        if (result.IsLockedOut)
         {
             return new AuthResult
             {
                 Succeeded = false,
-                Errors = new List<string> { "Invalid email or password." }
+                Errors = new List<string> { "Account locked due to multiple failed login attempts. Please try again in 15 minutes." }
+            };
+        }
+        
+        if (!result.Succeeded)
+        {
+            // Get remaining attempts before lockout
+            var accessFailedCount = await _userManager.GetAccessFailedCountAsync(user);
+            var maxAttempts = _userManager.Options.Lockout.MaxFailedAccessAttempts;
+            var remainingAttempts = maxAttempts - accessFailedCount;
+            
+            return new AuthResult
+            {
+                Succeeded = false,
+                Errors = new List<string> { $"Invalid email or password. {remainingAttempts} attempt(s) remaining before account lockout." }
             };
         }
 

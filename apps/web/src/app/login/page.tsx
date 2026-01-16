@@ -14,27 +14,51 @@ export default function LoginPage() {
   });
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [loginAttempted, setLoginAttempted] = useState(false);
 
-  // Redirect if already authenticated
+  // Redirect if already authenticated - but only if user hasn't just failed a login
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !loginAttempted) {
       router.push("/applications");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, loginAttempted]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setError("");
     setIsLoading(true);
+    setLoginAttempted(true);
+
+    try {
+      await login(formData);
+      // Navigation is handled by AuthContext, no need to do it here
+    } catch (err: any) {
+      const errorMessage =
+        err.response?.data?.errors?.[0] ||
+        err.response?.data?.message ||
+        "Login failed. Please check your credentials.";
+      setError(errorMessage);
+      setIsLoading(false);
+      // Keep loginAttempted true to prevent redirect on error
+    }
+  };
+
+  const handleButtonClick = async () => {
+    if (isLoading) return;
+
+    setError("");
+    setIsLoading(true);
+    setLoginAttempted(true);
 
     try {
       await login(formData);
     } catch (err: any) {
-      setError(
+      const errorMessage =
+        err.response?.data?.errors?.[0] ||
         err.response?.data?.message ||
-          "Login failed. Please check your credentials."
-      );
-    } finally {
+        "Login failed. Please check your credentials.";
+      setError(errorMessage);
       setIsLoading(false);
     }
   };
@@ -107,7 +131,8 @@ export default function LoginPage() {
 
           <div>
             <button
-              type="submit"
+              type="button"
+              onClick={handleButtonClick}
               disabled={isLoading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >

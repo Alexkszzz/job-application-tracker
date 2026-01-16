@@ -1,0 +1,16 @@
+# .NET
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+TestResults/
+*.user
+*.suo
+.vs/
+appsettings.Development.json
+
+# Environment files
+.env
+.env.local
+*.local.json
