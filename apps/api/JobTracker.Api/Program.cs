@@ -71,9 +71,22 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add DbContext with SQLite (temporary for local testing)
+// Add DbContext
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<JobTrackerDbContext>(options =>
-    options.UseSqlite("Data Source=jobtracker.db"));
+{
+    if (!string.IsNullOrEmpty(connectionString) && connectionString != "This will be override by user secrets")
+    {
+        // Use PostgreSQL in production
+        options.UseNpgsql(connectionString);
+    }
+    else
+    {
+        // Use SQLite with shared cache mode for Railway
+        var dbPath = Path.Combine("/tmp", "jobtracker.db");
+        options.UseSqlite($"Data Source={dbPath};Cache=Shared");
+    }
+});
 
 // Add Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
