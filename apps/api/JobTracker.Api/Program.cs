@@ -10,17 +10,25 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Threading.RateLimiting;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Configure Kestrel to listen on Railway's PORT environment variable
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-builder.WebHost.ConfigureKestrel(options =>
+try
 {
-    options.ListenAnyIP(int.Parse(port));
-});
+    Console.WriteLine("=== Application Starting ===");
+    
+    var builder = WebApplication.CreateBuilder(args);
+    Console.WriteLine("✓ WebApplication builder created");
 
-// Add services to the container.
-builder.Services.AddControllers();
+    // Configure Kestrel to listen on Railway's PORT environment variable
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+    Console.WriteLine($"✓ Configuring to listen on port: {port}");
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenAnyIP(int.Parse(port));
+    });
+    Console.WriteLine("✓ Kestrel configured");
+
+    // Add services to the container.
+    builder.Services.AddControllers();
+    Console.WriteLine("✓ Controllers added");
 
 // Add rate limiting
 builder.Services.AddRateLimiter(options =>
@@ -186,10 +194,31 @@ else
 }
 
 app.UseRateLimiter();
+    Console.WriteLine("✓ Rate limiter configured");
 
-app.UseAuthentication();
-app.UseAuthorization();
+    app.UseAuthentication();
+    Console.WriteLine("✓ Authentication configured");
+    
+    app.UseAuthorization();
+    Console.WriteLine("✓ Authorization configured");
 
-app.MapControllers();
+    app.MapControllers();
+    Console.WriteLine("✓ Controllers mapped");
 
-app.Run();
+    Console.WriteLine($"=== Application ready to start on port {port} ===");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine("=== FATAL ERROR ===");
+    Console.WriteLine($"Exception Type: {ex.GetType().FullName}");
+    Console.WriteLine($"Message: {ex.Message}");
+    Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+    if (ex.InnerException != null)
+    {
+        Console.WriteLine($"Inner Exception: {ex.InnerException.Message}");
+        Console.WriteLine($"Inner Stack Trace: {ex.InnerException.StackTrace}");
+    }
+    Console.WriteLine("===================");
+    throw;
+}
