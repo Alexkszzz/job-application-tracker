@@ -83,10 +83,16 @@ builder.Services.AddCors(options =>
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<JobTrackerDbContext>(options =>
 {
-    if (!string.IsNullOrEmpty(connectionString) && connectionString != "This will be override by user secrets")
+    if (builder.Environment.IsProduction() && !string.IsNullOrEmpty(connectionString) && connectionString != "This will be override by user secrets")
     {
         // Use PostgreSQL in production
         options.UseNpgsql(connectionString);
+    }
+    else if (builder.Environment.IsDevelopment())
+    {
+        // Use SQLite file for local development
+        options.UseSqlite("Data Source=jobtracker.db");
+        Console.WriteLine("Using SQLite database for development: jobtracker.db");
     }
     else
     {
